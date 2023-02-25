@@ -9,7 +9,7 @@ import {CreateTaskButtonComponent} from "./components/CreateTaskButtonComponent"
 const tasks = [
   {text: "Comprar un kilo de pechugas de pollo", completed: false},
   {text: "Comprar una docena de huevos", completed: false},
-  {text: "Barrer la entrada", completed: false},
+  {text: "Barrer la entrada", completed: true},
 ]
 
 function App() {
@@ -18,7 +18,13 @@ function App() {
       <TaskCounterComponent/>
       <TaskSearcherComponent/>
       <TaskListComponent>
-        {tasks.map(task => (<TaskItemComponent key={task.text} text={task.text} />))}
+        {tasks.map(task => (
+          <TaskItemComponent 
+            key={task.text} 
+            text={task.text} 
+            completed={task.completed}
+          />
+        ))}
       </TaskListComponent>
       <CreateTaskButtonComponent/>
     </>
