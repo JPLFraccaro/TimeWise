@@ -1,8 +1,8 @@
 import React from 'react'
 import './css/TaskCounterComponent.css'
-function TaskCounterComponent() {
+function TaskCounterComponent({totalTasks, completedTasks}) {
   return (
-    <h2 className='TaskCounterComponent'>Has completado 2 de 3 tareas</h2>
+    <h2 className='TaskCounterComponent'>Has completado {completedTasks} de {totalTasks} tareas</h2>
   )
 }
 
