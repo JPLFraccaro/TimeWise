@@ -5,31 +5,50 @@ import { TaskItemComponent } from "./components/TaskItemComponent"
 import { CreateTaskButtonComponent } from "./components/CreateTaskButtonComponent"
 import React, { useState } from "react"
 
-const defaultTasks = [
+/*const defaultTasks = [
   {text: "Comprar un kilo de pechugas de pollo", completed: false},
   {text: "Comprar una docena de huevos", completed: false},
   {text: "Barrer la entrada", completed: true},
   {text: "Lavar la entrada", completed: true},
-]
+]*/
 
 function App() {
-  const [tasks, setTasks] = useState(defaultTasks)
+  //initializing localStorage
+  const localStorageTasks = localStorage.getItem('TASKS_V1')
+  let parsedTasks
+  if (!localStorageTasks) {
+    localStorage.setItem('TASKS_V1', JSON.stringify([]))
+    parsedTasks = []
+  } else {
+    parsedTasks = JSON.parse(localStorageTasks)
+  }
+  const [tasks, setTasks] = useState(parsedTasks)
+  
+  //initializating searchBar value
   const [searchValue, setSearchValue] = useState('')
+  //filtering tasks
   const searchedTasks = tasks.filter(task => task.text.toLowerCase().includes(searchValue.toLowerCase()))
+  //counting tasks
   const totalTasks = searchedTasks.length
   const completedTasks = tasks.filter(task => task.completed).length
+  // saving changes on localStorage
+  const saveTasks = (newTasks) => {
+    const stringifiedTasks = JSON.stringify(newTasks)
+    localStorage.setItem('TASKS_V1', stringifiedTasks)
+    setTasks(newTasks)
+
+  }
+  // updating tasks
   const completeTask = (text) => {
     const newTasks = [...tasks]
     const taskIndex = tasks.findIndex(task => task.text === text)
     newTasks[taskIndex].completed = !(tasks[taskIndex].completed)
-    setTasks(newTasks)
+    saveTasks(newTasks)
   }
+  // deleting tasks
   const deleteTask = (text) => {
     const newTasks = tasks.filter(task => task.text !== text)
-    //let newTasks = [...tasks]
-    //const taskIndex = tasks.findIndex(task => task.text === text)
-    //newTasks.splice(taskIndex, 1)
-    setTasks(newTasks)
+    saveTasks(newTasks)
   }
   return (
     <>
@@ -57,4 +76,4 @@ function App() {
   );
 }
 
-export {App};
+export { App };
