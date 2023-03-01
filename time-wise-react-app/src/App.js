@@ -12,18 +12,34 @@ import React, { useState } from "react"
   {text: "Lavar la entrada", completed: true},
 ]*/
 
-function App() {
-  //initializing localStorage
-  const localStorageTasks = localStorage.getItem('TASKS_V1')
-  let parsedTasks
-  if (!localStorageTasks) {
-    localStorage.setItem('TASKS_V1', JSON.stringify([]))
-    parsedTasks = []
+function useLocalStorage(itemName, initialValue) {
+  const localStorageItem = localStorage.getItem(itemName)
+  let parsedItem
+
+  if (!localStorageItem) {
+    localStorage.setItem(itemName, JSON.stringify(initialValue))
+    parsedItem = []
   } else {
-    parsedTasks = JSON.parse(localStorageTasks)
+    parsedItem = JSON.parse(localStorageItem)
   }
-  const [tasks, setTasks] = useState(parsedTasks)
+
+  const [item, setItem] = useState(parsedItem)
   
+  const saveItem = (newItem) => {
+    const stringifiedItem = JSON.stringify(newItem)
+    localStorage.setItem(itemName, stringifiedItem)
+    setItem(newItem)
+  }
+  return [
+    item,
+    saveItem,
+  ]
+}
+
+
+function App() {
+  const [tasks, saveTasks] = useLocalStorage('TASKS_V1', [])
+
   //initializating searchBar value
   const [searchValue, setSearchValue] = useState('')
   //filtering tasks
@@ -31,13 +47,7 @@ function App() {
   //counting tasks
   const totalTasks = searchedTasks.length
   const completedTasks = tasks.filter(task => task.completed).length
-  // saving changes on localStorage
-  const saveTasks = (newTasks) => {
-    const stringifiedTasks = JSON.stringify(newTasks)
-    localStorage.setItem('TASKS_V1', stringifiedTasks)
-    setTasks(newTasks)
-
-  }
+  
   // updating tasks
   const completeTask = (text) => {
     const newTasks = [...tasks]
