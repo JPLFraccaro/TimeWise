@@ -1,5 +1,5 @@
 import React from 'react'
-import './css/CreateTaskButtonComponent.css'
+import '../css/CreateTaskButtonComponent.css'
 function CreateTaskButtonComponent() {
   const onNewTask = (mensaje) => {
     alert(mensaje)

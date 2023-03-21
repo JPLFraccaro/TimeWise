@@ -1,5 +1,5 @@
 import React from 'react'
-import './css/TaskSearchComponent.css'
+import '../css/TaskSearchComponent.css'
 function TaskSearchComponent({searchValue, setSearchValue}) {
   const onSearchValueChange = (event) => {
     setSearchValue(event.target.value)
